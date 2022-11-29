@@ -6,8 +6,9 @@ export default function RootLayout({
   return (
     <html>
       <head></head>
-      <nav>Nav</nav>
-      <body>{children}</body>
+      <body>
+        <nav>Nav</nav>
+        {children}</body>
     </html>
   )
 }
