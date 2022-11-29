@@ -14,8 +14,56 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Example {
+model Admin {
   id        String   @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String
+  userName  String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Company {
+  id        String   @id @default(cuid())
+  name      String
+  acronym   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Tickets {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  memory      String
+  storage     String 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model TeamManager {
+  id        String   @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String
+  userName  String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Employees {
+  id        String   @id @default(cuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Objects {
+  id        String   @id @default(cuid())
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
