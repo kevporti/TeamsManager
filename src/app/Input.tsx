@@ -6,11 +6,12 @@ interface Props {
   id: string;
   text?: string;
   as?: string;
+  containerClass?: string;
 }
 
-const Input: React.FC<Props> = ({ htmlFor, name, id, text, as }) => {
+const Input: React.FC<Props> = ({ htmlFor, name, id, text, as, containerClass }) => {
   return (
-    <div>
+    <div className={`${containerClass}`}>
       <label className='text-white' htmlFor={htmlFor}>
         {text || <div className='capitalize'>{name}</div>}
       </label>
