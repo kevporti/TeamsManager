@@ -15,14 +15,16 @@ datasource db {
 }
 
 model Admin {
-  id        String   @id @default(cuid())
-  firstName String
-  lastName  String
-  email     String
-  userName  String
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  email       String
+  phoneNumber String
+  userName    String
+  password    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  companies   Company[]
 }
 
 model Company {
@@ -31,41 +33,85 @@ model Company {
   acronym   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  admin     Admin    @relation(fields: [adminId], references: [id])
+  adminId   String
+  offices   Office[]
 }
 
-model Tickets {
-  id          String   @id @default(cuid())
-  title       String
-  description String
-  memory      String
-  storage     String 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model Office {
+  id            String   @id @default(cuid())
+  name          String
+  address       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  company       Company  @relation(fields: [companyId], references: [id])
+  companyId     String
+  teamManagers  TeamManager[]
+}
+
+model Ticket {
+  id            String   @id @default(cuid())
+  title         String
+  description   String
+  pcDetails     Boolean?
+  memory        String?
+  storage       String?
+  proccessor    String?
+  meetings      Boolean?
+  dateMeeting   DateTime?
+  timeMeeting   DateTime?
+  placeMeeting  String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model TeamManager {
-  id        String   @id @default(cuid())
-  firstName String
-  lastName  String
-  email     String
-  userName  String
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String    @id @default(cuid())
+  firstName   String
+  lastName    String
+  email       String
+  phoneNumber String
+  userName    String
+  password    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  office      Office    @relation(fields: [officeId], references: [id])
+  officeId    String
+  employees   Employee[]
+  objects     Object[]
 }
 
-model Employees {
-  id        String   @id @default(cuid())
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Employee {
+  id            String      @id @default(cuid())
+  employeeId    String?
+  firstName     String
+  lastName      String
+  email         String
+  phoneNumber   String?
+  userName      String
+  password      String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  teamManager   TeamManager @relation(fields: [teamManagerId], references: [id])
+  teamManagerId String
+  objects       Object[]
 }
 
-model Objects {
-  id        String   @id @default(cuid())
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Object {
+  id            String        @id @default(cuid())
+  name          String
+  status        String
+  description   String?
+  pcDetails     Boolean?
+  memory        String?
+  storage       String?
+  proccessor    String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  employee      Employee?     @relation(fields: [employeeId], references: [id])
+  employeeId    String?
+  teamManager   TeamManager?  @relation(fields: [teamManagerId], references: [id])
+  teamManagerId String?
 }
 
 // Necessary for Next auth
