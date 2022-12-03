@@ -1,44 +1,46 @@
 'use client';
 
-import { Form, Formik } from 'formik';
-import Input from '@/app/Input';
-import React from 'react';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
-function TicketForm() {
+const ticketSchema = z.object({
+  title: z.string().min(1, 'Required'),
+  name: z.string().min(1, 'Required'),
+  lastName: z.string().min(1, 'Required'),
+  emial: z.string().email().min(1, 'Required'),
+  importance: z.enum(['low', 'middle', 'high']),
+  description: z.string().max(500, 'Too long'),
+});
+
+type TicketSchemaType = z.infer<typeof ticketSchema>;
+
+export default function App() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TicketSchemaType>({
+    mode: 'onBlur',
+    resolver: zodResolver(ticketSchema),
+  });
+  const onSubmit: SubmitHandler<TicketSchemaType> = (data) => console.log(data);
+
+  console.log(errors);
+
   return (
-    <div>
-      <Formik
-        initialValues={{
-          name: '',
-          contact: '',
-          title: '',
-          importance: '',
-          description: '',
-        }}
-        onSubmit={() => console.log('hi')}
-      >
-        <Form className='flex flex-col gap-8 rounded-md bg-cool-gray-700 p-5'>
-          <div className='flex items-center justify-between gap-8'>
-            <Input htmlFor='name' name='name' id='name' />
-            <Input htmlFor='contact' name='contact' id='contact' />
-          </div>
-
-          <div className='flex w-full gap-5'>
-            <Input htmlFor='title' name='title' id='title' containerClass='w-3/4' />
-            <Input htmlFor='option' name='option' id='option' as='select' text='Importance' containerClass='w-1/4' />
-          </div>
-
-          <Input htmlFor='description' name='description' id='discription' as='textarea' />
-
-          <div className='flex justify-end'>
-            <button className='rounded-md bg-bright-lilac px-3 py-1 hover:bg-light-sky-blue' type='submit'>
-              Submit
-            </button>
-          </div>
-        </Form>
-      </Formik>
-    </div>
+    <form className='rounded-md bg-cool-gray-600 p-4' onSubmit={handleSubmit(onSubmit)}>
+      <div className='flex flex-col gap-2'>
+        <label className='text-white'>Something</label>
+        <input className='rounded-md bg-cool-gray-900' placeholder='Title' {...register('title')} />
+        {errors.title && <span>{errors.title.message}</span>}
+      </div>
+      <div className='flex flex-col gap-2'>
+        <label className='text-white'>Something</label>
+        <input className='rounded-md bg-cool-gray-900' placeholder='Title' {...register('name')} />
+        {errors.name && <span>{errors.name.message}</span>}
+      </div>
+      <button type='submit'>Submit</button>
+    </form>
   );
 }
-
-export default TicketForm;
