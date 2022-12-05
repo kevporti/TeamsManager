@@ -31,7 +31,7 @@ export default function App() {
       <div className='flex flex-col gap-2'>
         <label className='text-white'>Title</label>
         <input
-          className='h-8 rounded-md bg-cool-gray-900 p-1 text-white outline-none'
+          className='h-8 rounded-md bg-cool-gray-900 p-1 text-white outline-none focus:border-b'
           placeholder='Title'
           {...register('title')}
         />
@@ -46,7 +46,7 @@ export default function App() {
         <div className='flex flex-col gap-2'>
           <label className='text-white'>Name</label>
           <input
-            className='h-8 rounded-md bg-cool-gray-900 p-1 text-white outline-none'
+            className='h-8 rounded-md bg-cool-gray-900 p-1 text-white outline-none focus:border-b'
             placeholder='Title'
             {...register('name')}
           />
@@ -60,7 +60,7 @@ export default function App() {
         <div className='flex flex-col gap-2'>
           <label className='text-white'>Last name</label>
           <input
-            className=' h-8 rounded-md bg-cool-gray-900 p-1 text-white outline-none'
+            className=' h-8 rounded-md bg-cool-gray-900 p-1 text-white outline-none focus:border-b'
             placeholder='Title'
             {...register('lastName')}
           />
@@ -72,7 +72,7 @@ export default function App() {
         <div className='flex w-3/4 flex-col gap-2'>
           <label className='text-white'>Email</label>
           <input
-            className='h-8 rounded-md  bg-cool-gray-900 p-1 text-white outline-none'
+            className='h-8 rounded-md  bg-cool-gray-900 p-1 text-white outline-none focus:border-b'
             placeholder='Title'
             {...register('email')}
           />
@@ -101,7 +101,7 @@ export default function App() {
       <div className='flex flex-col gap-2'>
         <label className='text-white'>Something</label>
         <textarea
-          className='h-24 rounded-md bg-cool-gray-900 p-1 text-white outline-none '
+          className=' h-24 rounded-md bg-cool-gray-900 p-1 text-white outline-none focus:border-b '
           placeholder='Description'
           {...register('description')}
         />
