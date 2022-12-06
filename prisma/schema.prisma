@@ -47,17 +47,35 @@ model Office {
   company       Company  @relation(fields: [companyId], references: [id])
   companyId     String
   teamManagers  TeamManager[]
+  employees     Employee[]
+}
+
+model PointsOfMap {
+  id         String   @id @default(cuid())
+  xCoord     String
+  yCoord     String
+  content    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Ticket {
   id            String   @id @default(cuid())
   title         String
   description   String
-  pcDetails     Boolean?
-  memory        String?
+  status        String
+  pcDetails     String?
+  bought        DateTime?
+  userName      String?
+  password      String?
+  ipAddress     String?
+  macAddress    String?
+  ramMemory     String?
   storage       String?
+  typeOfStorage String?
   proccessor    String?
-  meetings      Boolean?
+  motherBoard   String?
+  meetings      String?
   dateMeeting   DateTime?
   timeMeeting   DateTime?
   placeMeeting  String?
@@ -94,6 +112,8 @@ model Employee {
   updatedAt     DateTime    @updatedAt
   teamManager   TeamManager @relation(fields: [teamManagerId], references: [id])
   teamManagerId String
+  office        Office      @relation(fields: [officeId], references: [id])
+  officeId      String
   objects       Object[]
 }
 
@@ -101,11 +121,18 @@ model Object {
   id            String        @id @default(cuid())
   name          String
   status        String
+  bought        DateTime
   description   String?
-  pcDetails     Boolean?
-  memory        String?
+  pcDetails     String?
+  userName      String?
+  password      String?
+  ipAddress     String?
+  macAddress    String?
+  ramMemory     String?
   storage       String?
+  typeOfStorage String?
   proccessor    String?
+  motherBoard   String?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   employee      Employee?     @relation(fields: [employeeId], references: [id])
