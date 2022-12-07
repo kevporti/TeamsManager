@@ -14,10 +14,131 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Example {
+model Admin {
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  email       String
+  phoneNumber String
+  userName    String
+  password    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  companies   Company[]
+}
+
+model Company {
   id        String   @id @default(cuid())
+  name      String
+  acronym   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  admin     Admin    @relation(fields: [adminId], references: [id])
+  adminId   String
+  offices   Office[]
+}
+
+model Office {
+  id            String   @id @default(cuid())
+  name          String
+  address       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  company       Company  @relation(fields: [companyId], references: [id])
+  companyId     String
+  teamManagers  TeamManager[]
+  employees     Employee[]
+}
+
+model PointsOfMap {
+  id         String   @id @default(cuid())
+  xCoord     String
+  yCoord     String
+  content    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Ticket {
+  id            String   @id @default(cuid())
+  title         String
+  description   String
+  status        String
+  pcDetails     String?
+  bought        DateTime?
+  userName      String?
+  password      String?
+  ipAddress     String?
+  macAddress    String?
+  ramMemory     String?
+  storage       String?
+  typeOfStorage String?
+  proccessor    String?
+  motherBoard   String?
+  meetings      String?
+  dateMeeting   DateTime?
+  timeMeeting   DateTime?
+  placeMeeting  String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model TeamManager {
+  id          String    @id @default(cuid())
+  firstName   String
+  lastName    String
+  email       String
+  phoneNumber String
+  userName    String
+  password    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  office      Office    @relation(fields: [officeId], references: [id])
+  officeId    String
+  employees   Employee[]
+  objects     Object[]
+}
+
+model Employee {
+  id            String      @id @default(cuid())
+  employeeId    String?
+  firstName     String
+  lastName      String
+  email         String
+  phoneNumber   String?
+  userName      String
+  password      String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  teamManager   TeamManager @relation(fields: [teamManagerId], references: [id])
+  teamManagerId String
+  office        Office      @relation(fields: [officeId], references: [id])
+  officeId      String
+  objects       Object[]
+}
+
+model Object {
+  id            String        @id @default(cuid())
+  name          String
+  status        String
+  bought        DateTime
+  description   String?
+  pcDetails     String?
+  userName      String?
+  password      String?
+  ipAddress     String?
+  macAddress    String?
+  ramMemory     String?
+  storage       String?
+  typeOfStorage String?
+  proccessor    String?
+  motherBoard   String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  employee      Employee?     @relation(fields: [employeeId], references: [id])
+  employeeId    String?
+  teamManager   TeamManager?  @relation(fields: [teamManagerId], references: [id])
+  teamManagerId String?
 }
 
 // Necessary for Next auth
