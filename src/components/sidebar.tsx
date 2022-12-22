@@ -29,11 +29,11 @@ const Sidebar: NextComponentType = () => {
         <div className=' text-4xl font-bold text-gray-300'>
           <div className='text-[#FEA702]'>T</div> M
         </div>
-        <div className={`${!sidebarOpen && 'scale-0'} origin-left text-2xl font-medium duration-100`}>
+        <div className={`${!sidebarOpen && 'scale-0'} origin-left text-2xl font-medium duration-200`}>
           <span className='pr-1 text-[#FEA702]'>Teams</span>
           <span className='text-gray-300'>Manager</span>
         </div>
-        <hr className='border-1 mt-4 w-full border-gray-300' />
+        <hr className={`${!sidebarOpen && 'scale-0'} border-1 mt-4 w-full origin-left border-gray-300 duration-200`} />
       </div>
 
       {/* Menu list */}
