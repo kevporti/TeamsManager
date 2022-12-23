@@ -26,7 +26,7 @@ const Sidebar: NextComponentType = () => {
 
       {/* Name of the company */}
       <div className='flex flex-col items-center'>
-        <div className=' text-4xl font-bold text-gray-300'>
+        <div className='flex text-4xl font-bold text-gray-300'>
           <div className='text-[#FEA702]'>T</div> M
         </div>
         <div className={`${!sidebarOpen && 'scale-0'} origin-left text-2xl font-medium duration-200`}>
