@@ -5,7 +5,9 @@ const Sidebar: NextComponentType = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const Menus = [
     { title: 'Dashboard', src: 'dashboard' },
-    { title: 'New User', src: 'person_add' },
+    { title: 'Tickets', src: 'receipt', gap: true },
+    { title: 'Status', src: 'vital_signs' },
+    { title: 'New User', src: 'person_add', gap: true },
     { title: 'Teams', src: 'group' },
     { title: 'Objects', src: 'devices' },
     { title: 'Profile', src: 'account_circle', penultimate: true },
@@ -41,7 +43,9 @@ const Sidebar: NextComponentType = () => {
         {Menus.map((menu, id) => (
           <li
             key={id}
-            className={`${menu.penultimate ? (sidebarOpen ? 'fixed bottom-16 w-60' : 'fixed bottom-16 w-auto') : ''} ${
+            className={`${menu.gap ? 'mt-8' : 'mt-2'} ${
+              menu.penultimate ? (sidebarOpen ? 'fixed bottom-16 w-60' : 'fixed bottom-16 w-auto') : ''
+            } ${
               menu.last ? (sidebarOpen ? 'fixed bottom-5 w-60' : 'fixed bottom-5 w-auto') : ''
             } text-md my-1 flex cursor-pointer items-center gap-x-4 rounded-md p-2 hover:bg-cool-gray-400`}
           >
