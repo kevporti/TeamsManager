@@ -76,9 +76,9 @@ model Ticket {
   placeMeeting      String?
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
-  pcDetails         PcDetails[]
-  teamManager       TeamManager @relation(fields: [teamManagerId], references: [id])
-  teamManagerId     String 
+  pcDetails         PcDetails?
+  teamManager       TeamManager? @relation(fields: [teamManagerId], references: [id])
+  teamManagerId     String? 
 }
 
 model PcDetails {
@@ -96,7 +96,7 @@ model PcDetails {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   ticket        Ticket    @relation(fields: [ticketId], references: [id])
-  ticketId      String
+  ticketId      String    @unique
 }
 
 model TeamManager {
