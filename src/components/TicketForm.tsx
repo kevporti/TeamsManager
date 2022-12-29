@@ -2,13 +2,14 @@
 
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { trpc } from '@/utils/trpc';
 import { z } from 'zod';
 
 export const ticketSchema = z.object({
   title: z.string().min(1, 'Required'),
-  name: z.string().min(1, 'Required'),
-  lastName: z.string().min(1, 'Required'),
-  email: z.string().email().min(1, 'Required'),
+  nameOfSender: z.string().min(1, 'Required'),
+  lastNameOfSender: z.string().min(1, 'Required'),
+  emailOfSender: z.string().email().min(1, 'Required'),
   importance: z.enum(['low', 'middle', 'high']),
   description: z.string().min(1, 'Required').max(500, 'Too long'),
 });
@@ -16,6 +17,8 @@ export const ticketSchema = z.object({
 type TicketSchemaType = z.infer<typeof ticketSchema>;
 
 export default function App() {
+  const mutation = trpc.ticket.createTicket.useMutation();
+
   const {
     register,
     handleSubmit,
@@ -24,7 +27,7 @@ export default function App() {
     mode: 'onTouched',
     resolver: zodResolver(ticketSchema),
   });
-  const onSubmit: SubmitHandler<TicketSchemaType> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<TicketSchemaType> = (data) => mutation.mutate(data);
 
   return (
     <form className='flex flex-col rounded-md bg-cool-gray-700 p-8' onSubmit={handleSubmit(onSubmit)}>
@@ -48,10 +51,10 @@ export default function App() {
           <input
             className='h-8 rounded-md bg-cool-gray-900 p-1 text-white outline-none focus:border-b'
             placeholder='Title'
-            {...register('name')}
+            {...register('nameOfSender')}
           />
-          {errors.name ? (
-            <span className='font-bold text-red-500'>*{errors.name.message}</span>
+          {errors.nameOfSender ? (
+            <span className='font-bold text-red-500'>*{errors.nameOfSender.message}</span>
           ) : (
             <div className='h-6' />
           )}
@@ -62,9 +65,11 @@ export default function App() {
           <input
             className=' h-8 rounded-md bg-cool-gray-900 p-1 text-white outline-none focus:border-b'
             placeholder='Title'
-            {...register('lastName')}
+            {...register('lastNameOfSender')}
           />
-          {errors.lastName && <span className='font-bold text-red-500'>*{errors.lastName.message}</span>}
+          {errors.lastNameOfSender && (
+            <span className='font-bold text-red-500'>*{errors.lastNameOfSender.message}</span>
+          )}
         </div>
       </div>
       <div className='p-2' />
@@ -74,10 +79,10 @@ export default function App() {
           <input
             className='h-8 rounded-md  bg-cool-gray-900 p-1 text-white outline-none focus:border-b'
             placeholder='Title'
-            {...register('email')}
+            {...register('emailOfSender')}
           />
-          {errors.email ? (
-            <span className='font-bold text-red-500'>*{errors.email.message}</span>
+          {errors.emailOfSender ? (
+            <span className='font-bold text-red-500'>*{errors.emailOfSender.message}</span>
           ) : (
             <div className='h-6' />
           )}
@@ -99,7 +104,7 @@ export default function App() {
       </div>
       <div className='p-2' />
       <div className='flex flex-col gap-2'>
-        <label className='text-white'>Something</label>
+        <label className='text-white'>Description</label>
         <textarea
           className=' h-24 rounded-md bg-cool-gray-900 p-1 text-white outline-none focus:border-b '
           placeholder='Description'
