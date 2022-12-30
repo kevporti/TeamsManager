@@ -48,6 +48,7 @@ model Office {
   companyId     String
   teamManagers  TeamManager[]
   employees     Employee[]
+  objects       Object[]
 }
 
 model PointsOfMap {
@@ -60,14 +61,31 @@ model PointsOfMap {
 }
 
 model Ticket {
-  id            String   @id @default(cuid())
-  title         String
-  description   String
-  status        String
-  pcDetails     String?
+  id                String      @id @default(cuid())
+  nameOfSender      String?
+  lastNameOfSender  String?
+  emailOfSender     String?
+  title             String
+  description       String
+  importance        String
+  status            String
+  pcRequest         String?
+  meetings          String?
+  dateMeeting       DateTime?
+  timeMeeting       DateTime?
+  placeMeeting      String?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  pcDetails         PcDetails?
+  teamManager       TeamManager? @relation(fields: [teamManagerId], references: [id])
+  teamManagerId     String? 
+}
+
+model PcDetails {
+  id            String @id @default(cuid())
   bought        DateTime?
-  userName      String?
-  password      String?
+  userName      String
+  password      String
   ipAddress     String?
   macAddress    String?
   ramMemory     String?
@@ -75,12 +93,10 @@ model Ticket {
   typeOfStorage String?
   proccessor    String?
   motherBoard   String?
-  meetings      String?
-  dateMeeting   DateTime?
-  timeMeeting   DateTime?
-  placeMeeting  String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  ticket        Ticket    @relation(fields: [ticketId], references: [id])
+  ticketId      String    @unique
 }
 
 model TeamManager {
@@ -95,8 +111,7 @@ model TeamManager {
   updatedAt   DateTime  @updatedAt
   office      Office    @relation(fields: [officeId], references: [id])
   officeId    String
-  employees   Employee[]
-  objects     Object[]
+  tickets     Ticket[]
 }
 
 model Employee {
@@ -110,8 +125,6 @@ model Employee {
   password      String
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  teamManager   TeamManager @relation(fields: [teamManagerId], references: [id])
-  teamManagerId String
   office        Office      @relation(fields: [officeId], references: [id])
   officeId      String
   objects       Object[]
@@ -135,10 +148,10 @@ model Object {
   motherBoard   String?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+  office        Office?       @relation(fields: [officeId], references: [id])
+  officeId      String?
   employee      Employee?     @relation(fields: [employeeId], references: [id])
   employeeId    String?
-  teamManager   TeamManager?  @relation(fields: [teamManagerId], references: [id])
-  teamManagerId String?
 }
 
 // Necessary for Next auth
