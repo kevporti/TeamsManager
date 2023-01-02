@@ -1,9 +1,10 @@
 'use client';
 
-import { useForm, type SubmitHandler } from 'react-hook-form';
+import { useForm, type SubmitHandler, UseFormRegisterReturn, FieldErrorsImpl } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { trpc } from '@/utils/trpc';
 import { z } from 'zod';
+import Input from '@components/Input'
 
 export const ticketSchema = z.object({
   title: z.string().min(1, 'Required'),
@@ -16,7 +17,8 @@ export const ticketSchema = z.object({
 
 type TicketSchemaType = z.infer<typeof ticketSchema>;
 
-export default function App() {
+
+export default function TicketForm() {
   const mutation = trpc.ticket.createTicket.useMutation();
 
   const {
@@ -27,65 +29,22 @@ export default function App() {
     mode: 'onTouched',
     resolver: zodResolver(ticketSchema),
   });
+
   const onSubmit: SubmitHandler<TicketSchemaType> = (data) => mutation.mutate(data);
 
   return (
     <form className='flex flex-col rounded-md bg-cool-gray-700 p-8' onSubmit={handleSubmit(onSubmit)}>
-      <div className='flex flex-col gap-2'>
-        <label className='text-white'>Title</label>
-        <input
-          className='h-8 rounded-md bg-cool-gray-900 p-1 text-white outline-none focus:border-b'
-          placeholder='Title'
-          {...register('title')}
-        />
-        {errors.title ? (
-          <span className='font-bold text-red-500'>*{errors.title.message}</span>
-        ) : (
-          <div className='h-6' />
-        )}
-      </div>
+      <Input reference='title' label='Title' error={errors.title} {...register('title')} />
       <div className='p-2' />
       <div className='flex'>
-        <div className='flex flex-col gap-2'>
-          <label className='text-white'>Name</label>
-          <input
-            className='h-8 rounded-md bg-cool-gray-900 p-1 text-white outline-none focus:border-b'
-            placeholder='Title'
-            {...register('nameOfSender')}
-          />
-          {errors.nameOfSender ? (
-            <span className='font-bold text-red-500'>*{errors.nameOfSender.message}</span>
-          ) : (
-            <div className='h-6' />
-          )}
-        </div>
+        <Input reference='nameOfSender' label='Name' error={errors.nameOfSender} {...register('nameOfSender')} />
         <div className='w-5' />
-        <div className='flex flex-col gap-2'>
-          <label className='text-white'>Last name</label>
-          <input
-            className=' h-8 rounded-md bg-cool-gray-900 p-1 text-white outline-none focus:border-b'
-            placeholder='Title'
-            {...register('lastNameOfSender')}
-          />
-          {errors.lastNameOfSender && (
-            <span className='font-bold text-red-500'>*{errors.lastNameOfSender.message}</span>
-          )}
-        </div>
+        <Input reference='lastNameOfSender' label='Last name' error={errors.lastNameOfSender} {...register('lastNameOfSender')} />
       </div>
       <div className='p-2' />
       <div className='flex w-full'>
         <div className='flex w-3/4 flex-col gap-2'>
-          <label className='text-white'>Email</label>
-          <input
-            className='h-8 rounded-md  bg-cool-gray-900 p-1 text-white outline-none focus:border-b'
-            placeholder='Title'
-            {...register('emailOfSender')}
-          />
-          {errors.emailOfSender ? (
-            <span className='font-bold text-red-500'>*{errors.emailOfSender.message}</span>
-          ) : (
-            <div className='h-6' />
-          )}
+          <Input reference='emailOfSender' label='Email' error={errors.emailOfSender} {...register('emailOfSender')} />
         </div>
         <div className='w-5' />
         <div className='flex w-1/4 flex-col gap-2'>
