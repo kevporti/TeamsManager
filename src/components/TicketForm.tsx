@@ -1,6 +1,6 @@
 'use client';
 
-import { useForm, type SubmitHandler, UseFormRegisterReturn, FieldErrorsImpl } from 'react-hook-form';
+import { useForm, type SubmitHandler} from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { trpc } from '@/utils/trpc';
 import { z } from 'zod';
