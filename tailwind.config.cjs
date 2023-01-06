@@ -5,7 +5,6 @@ module.exports = {
     extend: {
       colors: {
         'bright-lilac': '#e09bf0',
-        'chrome-yellow': '#fea702',
         'chrome-yellow': {
           50: '#FFF8EB',
           100: '#FFE2AD',
