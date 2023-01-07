@@ -3,14 +3,17 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import React from 'react';
+import { trpc } from '@/utils/trpc';
 
 export const OfficeFormSchema = z.object({
-  officeName: z.string().min(1, 'Required'),
+  name: z.string().min(1, 'Required'),
   address: z.string().min(1, 'Required'),
 });
 type OfficeFormSchemaType = z.infer<typeof OfficeFormSchema>;
 
 const OfficeForm: React.FC<{ setFormStep: React.Dispatch<React.SetStateAction<1 | 0>> }> = ({ setFormStep }) => {
+  const officeMutation = trpc.createOffice.createOffice.useMutation();
+
   const {
     register,
     reset,
@@ -24,7 +27,7 @@ const OfficeForm: React.FC<{ setFormStep: React.Dispatch<React.SetStateAction<1 
   const handleForm: SubmitHandler<OfficeFormSchemaType> = () => {
     console.log('Pasarle info al primer form para que se envie antes que este');
     setFormStep(1);
-    reset({ officeName: '', address: '' });
+    reset({ name: '', address: '' });
   };
 
   return (
@@ -36,10 +39,10 @@ const OfficeForm: React.FC<{ setFormStep: React.Dispatch<React.SetStateAction<1 
         <div className='flex flex-grow flex-col'>
           <label htmlFor='' className='flex items-center pb-1 sm:pb-2'>
             Office's Name
-            <div className='pl-4 text-sm text-red-700'>{errors.officeName?.message}</div>
+            <div className='pl-4 text-sm text-red-700'>{errors.name?.message}</div>
           </label>
           <input
-            {...register('officeName')}
+            {...register('name')}
             type='text'
             placeholder='Name of the Office'
             className='flex rounded-md bg-cool-gray-700 p-1 sm:bg-cool-gray-900'
